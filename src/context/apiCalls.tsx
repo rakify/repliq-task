@@ -1,4 +1,5 @@
 import { ILoginUserData } from "@/components/forms/signIn/interface";
+import { IRegisterUserData } from "@/components/forms/signUp/interface";
 import axios from "axios";
 
 axios.defaults.withCredentials = true; //so its can set automatically the cookie i want
@@ -13,6 +14,15 @@ export const login = async (user: ILoginUserData) => {
     return { data, status };
   } catch (error) {
     return error;
+  }
+};
+
+export const register = async (user: IRegisterUserData) => {
+  try {
+    const res = await axios.post(`/auth/register`, user);
+    return res;
+  } catch (err) {
+    return err;
   }
 };
 

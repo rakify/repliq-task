@@ -12,13 +12,16 @@ export default function ProductProvider({ children }: Props) {
   const [products, setProducts] = useState<IProduct[] | null>(null);
 
   const fetchProducts = async () => {
+    setIsFetching(true);
     try {
       const response = await getProducts();
       if (response.status === 200) {
         localStorage.setItem("products", JSON.stringify(response.data));
       }
+      setIsFetching(false);
     } catch (error) {
-      console.log(error);
+      setIsError(true);
+      setIsFetching(false);
     }
   };
 

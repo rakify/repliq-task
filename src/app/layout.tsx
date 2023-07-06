@@ -2,9 +2,10 @@ import "./globals.css";
 import { Inter } from "next/font/google";
 import ToastProvider from "./providers/toast.provider";
 import "react-toastify/dist/ReactToastify.css";
-import AuthProvider from "./providers/auth.provider";
-import { Props } from "@/interfaces/default";
+import UserProvider from "./providers/user.provider";
+import { Props } from "@/interfaces/default.interface";
 import { useUserContext } from "@/context/userContext";
+import ProductProvider from "./providers/product.provider";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -17,9 +18,11 @@ export default function RootLayout({ children }: Props) {
   return (
     <html lang="en">
       <body className={inter.className}>
-        <AuthProvider>
-          <ToastProvider>{children}</ToastProvider>
-        </AuthProvider>
+        <ProductProvider>
+          <UserProvider>
+            <ToastProvider>{children}</ToastProvider>
+          </UserProvider>
+        </ProductProvider>
       </body>
     </html>
   );

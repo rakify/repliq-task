@@ -15,3 +15,14 @@ export const login = async (user: ILoginUserData) => {
     return error;
   }
 };
+
+//Products
+//(public)
+export const getProducts = async () => {
+  try {
+    const { data, status } = await axios.get("/products/?new=true");
+    return { data, status };
+  } catch (error) {
+    return error;
+  }
+};

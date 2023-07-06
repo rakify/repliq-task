@@ -2,19 +2,33 @@ import { login } from "@/context/apiCalls";
 import Link from "next/link";
 import { FormEvent, useState } from "react";
 import { ILoginUserData } from "./interface";
+import { toast } from "react-toastify";
 
 const SignInForm = () => {
-  const [phoneNumber, setPhoneNumber] = useState("");
+  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
 
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
-    if (phoneNumber.trim() === "" || password.trim() === "") {
+    setLoading(true);
+    if (username.trim() === "" || password.trim() === "") {
       return;
     }
-    const user: ILoginUserData = { phoneNumber, password };
-    login(user);
+    const user: ILoginUserData = { username, password };
+    try {
+      const response = await login(user);
+
+      if (response.status === 200) {
+        toast.success("Successful");
+        localStorage.setItem("currentUser", JSON.stringify(response.data));
+      } else toast.error(response.response.data.message);
+
+      setLoading(false);
+    } catch (err) {
+      toast.error("Something went wrong");
+      setLoading(false);
+    }
   };
 
   return (
@@ -32,8 +46,8 @@ const SignInForm = () => {
                 </span>
                 <input
                   type="text"
-                  value={phoneNumber}
-                  onChange={(e) => setPhoneNumber(e.target.value)}
+                  value={username}
+                  onChange={(e) => setUsername(e.target.value)}
                   className="block w-full p-2 mt-1 bg-gray-200 rounded-md pl-14 focus:ring-2 focus:ring-blue-500 focus:border-transparent focus:outline-none"
                 />
               </div>
@@ -51,6 +65,7 @@ const SignInForm = () => {
             </div>
 
             <button
+              disabled={loading}
               className="border-none bg-blue-500 py-2 px-3 text-white roudend-sm w-full mt-2 rounded-md hover:bg-blue-700 mb-5"
               type="submit"
             >
@@ -58,7 +73,7 @@ const SignInForm = () => {
             </button>
           </form>
 
-          <Link href="/auth/register" className="text-sm text-blue-400">
+          <Link href="/auth/signUp" className="text-sm text-blue-400">
             Register Here
           </Link>
         </div>

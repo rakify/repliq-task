@@ -14,7 +14,7 @@ export default function SignIn() {
     if (currentUser) {
       router.push("/");
     }
-  }, [currentUser]);
+  }, [currentUser, router]);
 
   return (
     <Container>

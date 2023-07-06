@@ -1,6 +1,6 @@
 "use client";
 
-import { ICart, IUserContext } from "@/interfaces/user";
+import { ICart, IUserContext } from "@/interfaces/user.interface";
 import { createContext, useContext } from "react";
 
 export const defaultCart: ICart = {

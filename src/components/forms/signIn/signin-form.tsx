@@ -3,8 +3,11 @@ import Link from "next/link";
 import { FormEvent, useState } from "react";
 import { ILoginUserData } from "./interface";
 import { toast } from "react-toastify";
+import { useRouter } from "next/navigation";
 
 const SignInForm = () => {
+  const router = useRouter();
+
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
@@ -20,8 +23,9 @@ const SignInForm = () => {
       const response = await login(user);
 
       if (response.status === 200) {
-        toast.success("Successful");
+        toast.success("Login Successful");
         localStorage.setItem("currentUser", JSON.stringify(response.data));
+        router.push("/");
       } else toast.error(response.response.data.message);
 
       setLoading(false);

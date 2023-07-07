@@ -2,45 +2,45 @@
 *   NOTE: If need please update (xl,2xl or more) as per your design, no need to touch upto lg breakpoint
 */
 .container {
-    /* local variable  */
-    --padding-x: 16px;
-    --padding-left: var(--padding-x);
-    --padding-right: var(--padding-x);
-    --padding: calc(var(--padding-left) + var(--padding-right));
-    --container-2xl: 1320px;
-  
-    @apply mx-auto w-full;
-    padding-left: var(--padding-left);
-    padding-right: var(--padding-right);
-    max-width: calc(theme(screens[sm]) + var(--padding));
+  /* local variable  */
+  --padding-x: 16px;
+  --padding-left: var(--padding-x);
+  --padding-right: var(--padding-x);
+  --padding: calc(var(--padding-left) + var(--padding-right));
+  --container-2xl: 1320px;
+
+  @apply mx-auto w-full;
+  padding-left: var(--padding-left);
+  padding-right: var(--padding-right);
+  max-width: calc(theme(screens[sm]) + var(--padding));
+}
+
+.container.full-width {
+  @apply max-w-full;
+}
+.container.no-padding {
+  --padding-x: 0px;
+}
+@screen md {
+  .container {
+    max-width: calc(theme(screens[md]) + var(--padding));
   }
-  
-  .container.full-width {
-    @apply max-w-full;
+}
+
+@screen lg {
+  .container {
+    max-width: calc(theme(screens[lg]) + var(--padding));
   }
-  .container.no-padding {
-    --padding-x: 0px;
+}
+
+@screen xl {
+  .container {
+    max-width: calc(theme(screens[xl]) + var(--padding));
   }
-  @screen md {
-    .container {
-      max-width: calc(theme(screens[md]) + var(--padding));
-    }
+}
+
+@screen 2xl {
+  .container {
+    max-width: calc(var(--container-2xl) + var(--padding));
   }
-  
-  @screen lg {
-    .container {
-      max-width: calc(theme(screens[lg]) + var(--padding));
-    }
-  }
-  
-  @screen xl {
-    .container {
-      max-width: calc(theme(screens[xl]) + var(--padding));
-    }
-  }
-  
-  @screen 2xl {
-    .container {
-      max-width: calc(var(--container-2xl) + var(--padding));
-    }
-  }
+}

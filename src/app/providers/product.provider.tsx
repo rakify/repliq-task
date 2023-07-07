@@ -1,10 +1,13 @@
-"use client";
+'use client';
 
-import { getProducts } from "@/context/apiCalls";
-import { ProductContext } from "@/context/productContext";
-import { Props } from "@/interfaces/default.interface";
-import { IProduct } from "@/interfaces/product.interface";
-import { useEffect, useState } from "react";
+import { getProducts } from '@/context/apiCalls';
+import { ProductContext } from '@/context/productContext';
+import { Props } from '@/interfaces/default.interface';
+import {
+  IProduct,
+  IProductSuccessResponse,
+} from '@/interfaces/product.interface';
+import { useEffect, useState } from 'react';
 
 export default function ProductProvider({ children }: Props) {
   const [isFetching, setIsFetching] = useState(false);
@@ -14,9 +17,9 @@ export default function ProductProvider({ children }: Props) {
   const fetchProducts = async () => {
     setIsFetching(true);
     try {
-      const response = await getProducts();
-      if (response.status === 200) {
-        localStorage.setItem("products", JSON.stringify(response.data));
+      const response: IProductSuccessResponse = await getProducts();
+      if (response.status && response.status === 200) {
+        localStorage.setItem('products', JSON.stringify(response.data));
       }
       setIsFetching(false);
     } catch (error) {
@@ -26,11 +29,11 @@ export default function ProductProvider({ children }: Props) {
   };
 
   useEffect(() => {
-    let productsDataString = localStorage.getItem("products");
+    let productsDataString = localStorage.getItem('products');
     // if products doesnt exist lets fetch them
     if (!productsDataString) {
       fetchProducts();
-      productsDataString = localStorage.getItem("products");
+      productsDataString = localStorage.getItem('products');
     }
 
     if (productsDataString) {

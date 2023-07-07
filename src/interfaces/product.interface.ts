@@ -28,3 +28,8 @@ export interface IProductContext {
   isError: boolean;
   setIsError?: Function;
 }
+
+export interface IProductSuccessResponse {
+  data: IProduct[];
+  status?: number;
+}

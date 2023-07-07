@@ -65,6 +65,19 @@ export const getProducts = async () => {
     const { data, status } = await axios.get("/products/?new=true");
     return { data, status };
   } catch (error) {
-    return error;
+    const axiosError = error as AxiosError;
+    if (axiosError.response) {
+      // server responded with error
+      return {
+        data: axiosError.response.data,
+        status: axiosError.response.status,
+      };
+    } else if (axiosError.request) {
+      // request is successful but no response was received
+      return { data: axiosError.request };
+    } else {
+      // error in handing request
+      return { data: axiosError.message };
+    }
   }
 };

@@ -1,9 +1,9 @@
-"use client";
+'use client';
 
-import { UserContext, defaultCart } from "@/context/userContext";
-import { Props } from "@/interfaces/default.interface";
-import { IUser } from "@/interfaces/user.interface";
-import { useEffect, useState } from "react";
+import { UserContext, defaultCart } from '@/context/userContext';
+import { Props } from '@/interfaces/default.interface';
+import { IUser } from '@/interfaces/user.interface';
+import { useEffect, useState } from 'react';
 
 export default function UserProvider({ children }: Props) {
   const [isFetching, setIsFetching] = useState(false);
@@ -18,7 +18,7 @@ export default function UserProvider({ children }: Props) {
   };
 
   useEffect(() => {
-    const userDataString = localStorage.getItem("currentUser");
+    const userDataString = localStorage.getItem('currentUser');
 
     if (userDataString) {
       try {

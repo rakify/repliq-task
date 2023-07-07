@@ -1,39 +1,39 @@
-import { register } from "@/context/apiCalls";
-import Link from "next/link";
-import { FormEvent, useState } from "react";
-import { IRegisterUserData } from "./interface";
-import { toast } from "react-toastify";
-import { useRouter } from "next/navigation";
+import { register } from '@/context/apiCalls';
+import Link from 'next/link';
+import { FormEvent, useState } from 'react';
+import { IRegisterUserData } from './interface';
+import { toast } from 'react-toastify';
+import { useRouter } from 'next/navigation';
 
 const SignUpForm = () => {
   const router = useRouter();
-  const [username, setUsername] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [repeatPassword, setRepeatPassword] = useState("");
+  const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [repeatPassword, setRepeatPassword] = useState('');
   const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setLoading(true);
     if (
-      username.trim() === "" ||
-      password.trim() === "" ||
-      repeatPassword.trim() === "" ||
-      email.trim() === ""
+      username.trim() === '' ||
+      password.trim() === '' ||
+      repeatPassword.trim() === '' ||
+      email.trim() === ''
     ) {
       setLoading(false);
       return;
     }
 
     if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(email)) {
-      toast.error("Please provide a valid email");
+      toast.error('Please provide a valid email');
       setLoading(false);
       return;
     }
 
     if (!/^\d{10}$/.test(username)) {
-      toast.error("Please provide valid phone number");
+      toast.error('Please provide valid phone number');
       setLoading(false);
       return;
     }
@@ -48,15 +48,15 @@ const SignUpForm = () => {
       const response = await register(user);
 
       if (response.status === 201) {
-        toast.success("Registration successful, you may login now");
-        localStorage.setItem("currentUser", JSON.stringify(response.data));
-        router.push("/auth/signIn");
+        toast.success('Registration successful, you may login now');
+        localStorage.setItem('currentUser', JSON.stringify(response.data));
+        router.push('/auth/signIn');
       } else if (response.data && response.data.message)
         toast.error(response.data.message);
 
       setLoading(false);
     } catch (err) {
-      toast.error("Something went wrong");
+      toast.error('Something went wrong');
       setLoading(false);
     }
   };

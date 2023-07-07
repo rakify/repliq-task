@@ -1,7 +1,7 @@
-"use client";
+'use client';
 
-import { IProductContext } from "@/interfaces/product.interface";
-import { createContext, useContext } from "react";
+import { IProductContext } from '@/interfaces/product.interface';
+import { createContext, useContext } from 'react';
 
 export const ProductContext = createContext<IProductContext>({
   products: null,

@@ -51,9 +51,8 @@ const SignUpForm = () => {
         toast.success("Registration successful, you may login now");
         localStorage.setItem("currentUser", JSON.stringify(response.data));
         router.push("/auth/signIn");
-      } else if (response.response.data.err.code === 11000) {
-        toast.error("Phone number or email already exists");
-      } else toast.error(response.response.data.message);
+      } else if (response.data && response.data.message)
+        toast.error(response.data.message);
 
       setLoading(false);
     } catch (err) {

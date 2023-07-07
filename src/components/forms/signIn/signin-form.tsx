@@ -22,15 +22,16 @@ const SignInForm = () => {
     try {
       const response = await login(user);
 
-      if (response.status === 200) {
+      if (response.status && response.status === 200) {
         toast.success("Login Successful");
         localStorage.setItem("currentUser", JSON.stringify(response.data));
         router.push("/");
-      } else toast.error(response.response.data.message);
+      } else if (response.data && response.data.message)
+        toast.error(response.data.message);
 
       setLoading(false);
     } catch (err) {
-      toast.error("Something went wrong");
+      toast.error("Something went wrong.");
       setLoading(false);
     }
   };

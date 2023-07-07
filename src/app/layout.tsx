@@ -1,11 +1,11 @@
 import './globals.css';
 import { Inter } from 'next/font/google';
-import ToastProvider from './providers/toast.provider';
+import ToastProvider from '../providers/toast.provider';
 import 'react-toastify/dist/ReactToastify.css';
-import UserProvider from './providers/user.provider';
+import UserProvider from '../providers/user.provider';
 import { Props } from '@/interfaces/default.interface';
 import { useUserContext } from '@/context/userContext';
-import ProductProvider from './providers/product.provider';
+import ProductProvider from '../providers/product.provider';
 
 const inter = Inter({ subsets: ['latin'] });
 

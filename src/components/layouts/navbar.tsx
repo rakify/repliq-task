@@ -21,7 +21,7 @@ const Navbar = () => {
           <ul className="text-gray-400 sm:self-center text-xl border-t sm:border-none">
             {!currentUser
               ? publicLinks.map((publicL) => (
-                  <li className="sm:inline-block">
+                  <li className="sm:inline-block" key={publicL.link}>
                     <Link href={publicL.link}>
                       <p className="p-3 hover:text-white">{publicL.title}</p>
                     </Link>
@@ -29,7 +29,7 @@ const Navbar = () => {
                 ))
               : currentUser.accountType === 0
               ? customerLinks.map((customer) => (
-                  <li className="sm:inline-block">
+                  <li className="sm:inline-block" key={customer.link}>
                     <Link href={customer.link}>
                       <p className="p-3 hover:text-white">
                         {customer.title}
@@ -41,7 +41,7 @@ const Navbar = () => {
                   </li>
                 ))
               : adminLinks.map((admin) => (
-                  <li className="sm:inline-block">
+                  <li className="sm:inline-block" key={admin.link}>
                     <Link href={admin.link}>
                       <p className="p-3 hover:text-white">{admin.title}</p>
                     </Link>

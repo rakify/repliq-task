@@ -19,18 +19,14 @@ import { useParams, useRouter } from 'next/navigation';
 import { useProductContext } from '@/context/productContext';
 import { useUserContext } from '@/context/userContext';
 import Link from 'next/link';
-
-function SlideTransition(props: SlideProps) {
-  return <Slide {...props} direction="left" />;
-}
+import { IAddToCartInput } from '@/interfaces/cart.interface';
+import { addToCart } from '@/context/apiCalls';
+import { toast } from 'react-toastify';
 
 const Product = () => {
   const route = useRouter();
   const productId = useParams().productId;
   const [quantity, setQuantity] = useState(1);
-
-  // const [addedToCartMsg, setAddedToCartMsg] = useState(false);
-  // const [addedToWishlistMsg, setAddedToWishlistMsg] = useState(false);
 
   const { products } = useProductContext();
 
@@ -41,42 +37,35 @@ const Product = () => {
 
   const { currentUser } = useUserContext();
 
-  const productInfo = {
-    productId: product?._id,
-    title: product?.title,
-    img: product?.img,
-    quantity: quantity,
-    price: product?.price,
-    marketPrice: product?.marketPrice,
-    seller: product?.seller,
-    hasMerchantReturnPolicy: product?.hasMerchantReturnPolicy,
-  };
-
   const handleAddToCart = () => {
     !currentUser && route.push('/login');
-    // currentUser &&
-    //   addToCart(currentUser._id, productInfo, dispatch).then(() => {
-    //     setAddedToCartMsg(true);
-    //   });
-  };
-  const handleAddToWishlist = () => {
-    !currentUser && route.push('/login');
-    // currentUser &&
-    //   addToWishlist(currentUser._id, productInfo).then(() => {
-    //     setAddedToWishlistMsg(true);
-    //   });
+
+    if (currentUser && product) {
+      const productInfo = {
+        productId: product._id,
+        title: product.title,
+        img: product.img,
+        quantity: quantity,
+        price: product.price,
+        marketPrice: product.marketPrice,
+        seller: product.seller,
+        hasMerchantReturnPolicy: product.hasMerchantReturnPolicy,
+      };
+      const addToCartInput: IAddToCartInput = {
+        id: currentUser?._id,
+        product: productInfo,
+      };
+      addToCart(addToCartInput).then(() => {
+        toast.success('Product added to cart');
+      });
+    }
   };
 
   return (
     <>
       <Container maxWidth="lg">
         {product ? (
-          <Stack
-            direction="column"
-            // sx={{ flexDirection: { xs: "column", sm: "row" } }}
-            spacing={2}
-            justifyContent="space-between"
-          >
+          <Stack direction="column" spacing={2} justifyContent="space-between">
             <Typography variant="h4">{product.title}</Typography>
 
             <Typography variant="subtitle2">ID: {product._id}</Typography>
@@ -205,24 +194,6 @@ const Product = () => {
           <Stack>Product with this id does not exist</Stack>
         )}
       </Container>
-
-      {/* <Snackbar
-          anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
-          open={Boolean(addedToCartMsg)}
-          TransitionComponent={SlideTransition}
-          autoHideDuration={2000}
-          onClose={() => setAddedToCartMsg(false)}
-          message="Added To Cart"
-        />
-  
-        <Snackbar
-          anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
-          open={addedToWishlistMsg}
-          TransitionComponent={SlideTransition}
-          autoHideDuration={2000}
-          onClose={() => setAddedToWishlistMsg(false)}
-          message="Added To Wishlist"
-        /> */}
     </>
   );
 };

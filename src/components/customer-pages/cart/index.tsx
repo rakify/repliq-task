@@ -1,16 +1,6 @@
-import { addToCart } from '@/context/apiCalls';
 import { useUserContext } from '@/context/userContext';
-import {
-  ICartProduct,
-  ICartQuantity,
-  IGroupedCart,
-} from '@/interfaces/cart.interface';
-import {
-  ArrowDownwardOutlined,
-  ArrowUpwardOutlined,
-  Celebration,
-  Clear,
-} from '@mui/icons-material';
+import { ICartProduct, IGroupedCart } from '@/interfaces/cart.interface';
+import { Celebration, Clear } from '@mui/icons-material';
 import { Avatar, Button, Stack, Typography, IconButton } from '@mui/material';
 import Link from 'next/link';
 import React, { useEffect, useState } from 'react';
@@ -75,51 +65,6 @@ const CartPage = () => {
     setGroupedCart(groupedCart);
     setTotalSaved(totalMarketPrice);
   }, [cart]);
-
-  const handleQuantity = ({
-    type,
-    productId,
-    title,
-    img,
-    quantity,
-    price,
-    marketPrice,
-    seller,
-    hasMerchantReturnPolicy,
-  }: ICartQuantity) => {
-    if (currentUser) {
-      setLoading(true);
-      let productInfo: ICartProduct = {
-        productId: productId,
-        title: title,
-        img: img,
-        price: price,
-        marketPrice: marketPrice,
-        seller: seller,
-        hasMerchantReturnPolicy: hasMerchantReturnPolicy,
-        quantity: 0,
-      };
-
-      const addToCartInput = {
-        id: currentUser._id,
-        product: productInfo,
-      };
-      if (type === 'dec') {
-        productInfo.quantity = -1;
-        addToCart(addToCartInput);
-        fetchCartProducts(currentUser._id);
-        setLoading(false);
-      } else if (type === 'inc') {
-        productInfo.quantity = 1;
-        addToCart(addToCartInput);
-        setLoading(false);
-      } else if (type === 'remove') {
-        productInfo.quantity = -quantity;
-        addToCart(addToCartInput);
-        setLoading(false);
-      }
-    }
-  };
 
   return (
     <>
@@ -196,56 +141,6 @@ const CartPage = () => {
                           key={productId}
                         >
                           <Stack
-                            direction="column"
-                            justifyContent="space-between"
-                            alignItems="center"
-                            sx={{ flexDirection: { xs: 'row', sm: 'column' } }}
-                          >
-                            <Button
-                              disabled={loading}
-                              variant="text"
-                              onClick={() =>
-                                handleQuantity({
-                                  type: 'inc',
-                                  productId,
-                                  title,
-                                  img,
-                                  quantity,
-                                  price,
-                                  marketPrice,
-                                  seller,
-                                  hasMerchantReturnPolicy,
-                                })
-                              }
-                            >
-                              <ArrowUpwardOutlined
-                                sx={{ width: 15, color: 'gray' }}
-                              />
-                            </Button>
-                            <Typography color="primary">{quantity}</Typography>
-                            <Button
-                              variant="text"
-                              disabled={loading || quantity === 1}
-                              onClick={() =>
-                                handleQuantity({
-                                  type: 'dec',
-                                  productId,
-                                  title,
-                                  img,
-                                  quantity,
-                                  price,
-                                  marketPrice,
-                                  seller,
-                                  hasMerchantReturnPolicy,
-                                })
-                              }
-                            >
-                              <ArrowDownwardOutlined
-                                sx={{ width: 15, color: 'gray' }}
-                              />
-                            </Button>
-                          </Stack>
-                          <Stack
                             direction="row"
                             alignItems="center"
                             justifyContent="space-between"
@@ -280,19 +175,7 @@ const CartPage = () => {
                           <IconButton
                             disabled={loading}
                             size="large"
-                            onClick={() =>
-                              handleQuantity({
-                                type: 'remove',
-                                productId,
-                                title,
-                                img,
-                                quantity,
-                                price,
-                                marketPrice,
-                                seller,
-                                hasMerchantReturnPolicy,
-                              })
-                            }
+                            onClick={() => {}}
                           >
                             <Clear />
                           </IconButton>

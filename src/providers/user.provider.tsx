@@ -31,6 +31,7 @@ export default function UserProvider({ children }: Props) {
           isError: false,
           isFetching: false,
         };
+        setCart(cart);
         localStorage.setItem('cart', JSON.stringify(cart));
       }
       setIsFetching(false);
@@ -43,7 +44,7 @@ export default function UserProvider({ children }: Props) {
   // setup user
   useEffect(() => {
     const userDataString = localStorage.getItem('currentUser');
-    const cartDataString = localStorage.getItem('currentUser');
+    const cartDataString = localStorage.getItem('cart');
 
     if (userDataString) {
       try {

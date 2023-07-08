@@ -12,7 +12,9 @@ const Navbar = () => {
         <div className="sm:flex justify-around">
           {/* Site Title */}
           <Link href="/" className="text-white text-3xl font-bold p-3">
-            Repliq Mart
+            {currentUser && currentUser.isAdmin
+              ? 'Welcome Admin'
+              : 'Repliq Mart'}
           </Link>
 
           {/* Menus */}

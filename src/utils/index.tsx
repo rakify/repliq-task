@@ -24,10 +24,6 @@ export const customerLinks = [
 ];
 export const adminLinks = [
   {
-    title: 'Home',
-    link: '/',
-  },
-  {
     title: 'Products',
     link: '/admin/products',
   },

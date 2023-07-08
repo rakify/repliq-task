@@ -1,34 +1,39 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
-## Getting Started
+# Repliq Mart
 
-First, run the development server:
+This project is a practice project, a task assigned by Repliq for the **Junior React Developer** position.
+
+In this project, I have used **NextJS v13**, **TailwindCSS v3.3.2**, **Typescript**, and **MUI** to design the admin panel. I have also used **Context** as state management for practice, instead of Redux or Redux Toolkit. Authentication is being handled from the backend. The backend was implemented by me almost a year ago, and you can find it [here](https://github.com/rakify/ecommerce-site-mern-mui). Previously, I have worked on a project with Redux Toolkit, a multi-vendor full-stack ecommerce project, and you can find it [here](https://github.com/rakify/ecommerce-frontend)."
+
+## Installation
+
+Install this project with npm
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
+  npm install
+  npm run dev
 ```
+    
+## Features
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+- SignUp/SignIn: Users can sign up and sign in to the platform.
+- Product List and Details: Anyone can view the list of products and their details.
+- Cart Facilities: Upon registering, users can access cart facilities, including adding products to the cart, deleting products from the cart, and checking out to place an order.
+- Admin Dashboard: The admin has access to various functionalities, such as viewing user information, adding users, accessing product information, and viewing order information.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+## Demo
 
-## Learn More
+[repliqmart.vercel.app](https://repliqmart.vercel.app)
 
-To learn more about Next.js, take a look at the following resources:
+**for Customer view:** 
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+phone number: `1874557769`
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+password: `1234`
 
-## Deploy on Vercel
+**for Admin view:** 
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+phone number: `1580841319`
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+password: `1234`

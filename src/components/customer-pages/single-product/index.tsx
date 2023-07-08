@@ -12,6 +12,7 @@ import {
   Tooltip,
   Typography,
 } from '@mui/material';
+import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { toast } from 'react-toastify';
@@ -92,7 +93,7 @@ const ProductComponent: React.FC<{ item: IProduct }> = ({ item }) => {
             position: 'relative',
           }}
         >
-          <img
+          <Image
             className="m-auto block max-w-full max-h-full"
             alt="PRODUCT"
             src={item.img}

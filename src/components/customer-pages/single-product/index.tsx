@@ -96,6 +96,8 @@ const ProductComponent: React.FC<{ item: IProduct }> = ({ item }) => {
           <Image
             className="m-auto block max-w-full max-h-full"
             alt="PRODUCT"
+            width={200}
+            height={150}
             src={item.img}
           />
           <Stack

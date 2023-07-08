@@ -43,7 +43,7 @@ const ProductComponent: React.FC<{ item: IProduct }> = ({ item }) => {
   const { currentUser, setCart } = useUserContext();
 
   const handleAddToCart = () => {
-    !currentUser && route.push('/login');
+    !currentUser && route.push('/auth/signIn');
 
     if (currentUser && item) {
       const productInfo = {

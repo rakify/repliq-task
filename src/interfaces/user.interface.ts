@@ -1,3 +1,5 @@
+import { ICart } from './cart.interface';
+
 export interface IUser {
   _id: string;
   username: string;
@@ -22,21 +24,15 @@ export interface IUser {
   updatedAt: Date;
 }
 
-export interface ICart {
-  products: [];
-  total: number;
-  isFetching: boolean;
-  isError: boolean;
-}
-
 export interface IUserContext {
   currentUser: IUser | null;
-  setCurrentUser?: Function;
+  setCurrentUser: Function;
   cart: ICart;
   setCart: Function;
   logoutUser: Function;
   isFetching: boolean;
-  setIsFetching?: Function;
+  setIsFetching: Function;
   isError: boolean;
-  setIsError?: Function;
+  setIsError: Function;
+  fetchCartProducts: Function;
 }

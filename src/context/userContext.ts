@@ -1,6 +1,5 @@
-'use client';
-
-import { ICart, IUserContext } from '@/interfaces/user.interface';
+import { ICart } from '@/interfaces/cart.interface';
+import { IUserContext } from '@/interfaces/user.interface';
 import { createContext, useContext } from 'react';
 
 export const defaultCart: ICart = {
@@ -10,16 +9,19 @@ export const defaultCart: ICart = {
   isFetching: false,
 };
 
-export const UserContext = createContext<IUserContext>({
+const INITIAL_STATE = {
   currentUser: null,
   setCurrentUser: () => {},
-  cart: defaultCart,
-  setCart: () => {},
   logoutUser: () => {},
   isFetching: false,
   setIsFetching: () => {},
   isError: false,
   setIsError: () => {},
-});
+  cart: defaultCart,
+  setCart: () => {},
+  fetchCartProducts: () => {},
+};
+
+export const UserContext = createContext<IUserContext>(INITIAL_STATE);
 
 export const useUserContext = () => useContext(UserContext);

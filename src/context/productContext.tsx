@@ -11,4 +11,4 @@ export const ProductContext = createContext<IProductContext>({
   setIsError: () => {},
 });
 
-export const useUserContext = () => useContext(ProductContext);
+export const useProductContext = () => useContext(ProductContext);

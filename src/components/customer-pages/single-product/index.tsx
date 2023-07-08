@@ -2,11 +2,7 @@ import { addToCart } from '@/context/apiCalls';
 import { useUserContext } from '@/context/userContext';
 import { IAddToCartInput } from '@/interfaces/cart.interface';
 import { IProduct } from '@/interfaces/product.interface';
-import {
-  FavoriteBorderOutlined,
-  ShoppingCartOutlined,
-  InfoOutlined,
-} from '@mui/icons-material';
+import { ShoppingCartOutlined, InfoOutlined } from '@mui/icons-material';
 import {
   Button,
   Grid,
@@ -78,10 +74,10 @@ const ProductComponent: React.FC<{ item: IProduct }> = ({ item }) => {
           '&:hover': {
             '& .details': {
               opacity: 1,
-              height: 30,
-              webkitTransition: 'all 1s linear',
-              mozTransition: 'all 1s linear',
-              transition: 'all 1s linear',
+              height: 40,
+              webkitTransition: 'all 0.5s linear',
+              mozTransition: 'all 0.5s linear',
+              transition: 'all 0.5s linear',
               overflow: 'hidden',
             },
           },
@@ -103,7 +99,7 @@ const ProductComponent: React.FC<{ item: IProduct }> = ({ item }) => {
           />
           <Stack
             direction="row"
-            justifyContent="space-evenly"
+            justifyContent="space-around"
             className="details"
             sx={{
               opacity: 0,
@@ -122,7 +118,7 @@ const ProductComponent: React.FC<{ item: IProduct }> = ({ item }) => {
           >
             <IconButton
               color="primary"
-              size="small"
+              size="large"
               onClick={handleAddToCart}
               sx={{ '&:hover': { bgcolor: '#CBF1F5', br: '50%' } }}
             >
@@ -132,7 +128,7 @@ const ProductComponent: React.FC<{ item: IProduct }> = ({ item }) => {
             </IconButton>
             <IconButton
               color="primary"
-              size="small"
+              size="large"
               sx={{ '&:hover': { bgcolor: '#CBF1F5', br: '50%' } }}
             >
               <Link

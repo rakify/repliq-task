@@ -4,9 +4,11 @@ import { FormEvent, useState } from 'react';
 import { ILoginUserData } from './interface';
 import { toast } from 'react-toastify';
 import { useRouter } from 'next/navigation';
+import { useUserContext } from '@/context/userContext';
 
 const SignInForm = () => {
   const router = useRouter();
+  const { setCurrentUser } = useUserContext();
 
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -25,6 +27,7 @@ const SignInForm = () => {
       if (response.status && response.status === 200) {
         toast.success('Login Successful');
         localStorage.setItem('currentUser', JSON.stringify(response.data));
+        setCurrentUser(response.data);
         router.push('/');
       } else if (response.data && response.data.message)
         toast.error(response.data.message);

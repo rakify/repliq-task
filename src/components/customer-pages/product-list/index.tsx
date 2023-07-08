@@ -4,8 +4,6 @@ import { Grid } from '@mui/material';
 
 const ProductList = () => {
   const { products } = useProductContext();
-  console.log(products);
-  let cartOpen = false;
 
   return (
     <>
@@ -14,9 +12,11 @@ const ProductList = () => {
           container
           rowSpacing={2}
           columnSpacing={1}
-          columns={{ xs: 5, sm: cartOpen ? 5 : 10, md: cartOpen ? 10 : 15 }}
+          columns={{ xs: 5, sm: 10, md: 15 }}
         >
-          {products?.map((product) => <ProductCard item={product} />)}
+          {products?.map((product) => (
+            <ProductCard item={product} key={product._id} />
+          ))}
         </Grid>
       </section>
     </>

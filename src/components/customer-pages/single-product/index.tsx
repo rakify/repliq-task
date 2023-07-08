@@ -68,7 +68,7 @@ const ProductComponent: React.FC<{ item: IProduct }> = ({ item }) => {
   };
 
   return (
-    <Grid item lg={3} sm={5} xs={10} gap={2}>
+    <Grid item>
       <Item
         sx={{
           '&:hover': {
@@ -118,9 +118,9 @@ const ProductComponent: React.FC<{ item: IProduct }> = ({ item }) => {
           >
             <IconButton
               color="primary"
-              size="large"
+              size="medium"
               onClick={handleAddToCart}
-              sx={{ '&:hover': { bgcolor: '#CBF1F5', br: '50%' } }}
+              sx={{ '&:hover': { bgcolor: '#CBF1F5' } }}
             >
               <Tooltip title="Add to Cart" placement="top" arrow>
                 <ShoppingCartOutlined fontSize="inherit" />
@@ -128,8 +128,8 @@ const ProductComponent: React.FC<{ item: IProduct }> = ({ item }) => {
             </IconButton>
             <IconButton
               color="primary"
-              size="large"
-              sx={{ '&:hover': { bgcolor: '#CBF1F5', br: '50%' } }}
+              size="medium"
+              sx={{ '&:hover': { bgcolor: '#CBF1F5' } }}
             >
               <Link
                 href={`/product/${item._id}`}

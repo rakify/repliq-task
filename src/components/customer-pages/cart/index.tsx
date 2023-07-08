@@ -64,7 +64,7 @@ const CartPage = () => {
 
   useEffect(() => {
     if (currentUser) fetchCartProducts(currentUser._id);
-  }, [currentUser]);
+  }, [currentUser, fetchCartProducts]);
 
   useEffect(() => {
     let totalMarketPrice = 0;

@@ -3,6 +3,7 @@ import {
   ILoginUserData,
 } from '@/components/forms/signIn/interface';
 import { IRegisterUserData } from '@/components/forms/signUp/interface';
+import { IAddToCartInput } from '@/interfaces/cart.interface';
 import axios, { AxiosError } from 'axios';
 
 axios.defaults.withCredentials = true; //so its can set automatically the cookie i want
@@ -79,5 +80,41 @@ export const getProducts = async () => {
       // error in handing request
       return { data: axiosError.message };
     }
+  }
+};
+
+//Cart
+
+export const getCartProducts = async (id: string) => {
+  try {
+    const { data, status } = await axios.get(`/carts/find/${id}`);
+    return { data, status };
+  } catch (error) {
+    const axiosError = error as AxiosError;
+    if (axiosError.response) {
+      // server responded with error
+      return {
+        data: axiosError.response.data,
+        status: axiosError.response.status,
+      };
+    } else if (axiosError.request) {
+      // request is successful but no response was received
+      return { data: axiosError.request };
+    } else {
+      // error in handing request
+      return { data: axiosError.message };
+    }
+  }
+};
+
+export const addToCart = async (addToCartInput: IAddToCartInput) => {
+  try {
+    const { data, status } = await axios.post(
+      `/carts/${addToCartInput.id}`,
+      addToCartInput.product
+    );
+    return { data, status };
+  } catch (err) {
+    return { result: 'error', message: 'Failed to add to cart' + err };
   }
 };

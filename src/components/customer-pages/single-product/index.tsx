@@ -1,32 +1,24 @@
+import { addToCart } from '@/context/apiCalls';
+import { useUserContext } from '@/context/userContext';
+import { IAddToCartInput } from '@/interfaces/cart.interface';
 import { IProduct } from '@/interfaces/product.interface';
 import {
   FavoriteBorderOutlined,
   ShoppingCartOutlined,
   InfoOutlined,
-  Close,
-  Cancel,
 } from '@mui/icons-material';
 import {
   Button,
-  ButtonBase,
-  Chip,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogTitle,
-  Fade,
   Grid,
   IconButton,
-  Paper,
-  Slide,
-  Snackbar,
   Stack,
   styled,
   Tooltip,
   Typography,
 } from '@mui/material';
 import Link from 'next/link';
-import { forwardRef, useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { toast } from 'react-toastify';
 
 const Item = styled(Grid)(({ theme }) => ({
   backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#ffffff',
@@ -49,38 +41,35 @@ const ProductTitle = styled(Typography)(({ theme }) => ({
   fontWeight: 700,
 }));
 
-// function SlideTransition(props) {
-//   return <Slide {...props} direction="left" />;
-// }
-
 const ProductComponent: React.FC<{ item: IProduct }> = ({ item }) => {
-  const [openProduct, setOpenProduct] = useState(false);
-  const [addedToCartMsg, setAddedToCartMsg] = useState(false);
-  const [addedToWishlistMsg, setAddedToWishlistMsg] = useState(false);
+  const route = useRouter();
 
-  const productInfo = {
-    productId: item._id,
-    title: item.title,
-    img: item.img,
-    quantity: 1,
-    price: item.price,
-    marketPrice: item.marketPrice,
-    seller: item.seller,
-    hasMerchantReturnPolicy: item.hasMerchantReturnPolicy,
+  const { currentUser } = useUserContext();
+
+  const handleAddToCart = () => {
+    !currentUser && route.push('/login');
+
+    if (currentUser && item) {
+      const productInfo = {
+        productId: item._id,
+        title: item.title,
+        img: item.img,
+        quantity: 1,
+        price: item.price,
+        marketPrice: item.marketPrice,
+        seller: item.seller,
+        hasMerchantReturnPolicy: item.hasMerchantReturnPolicy,
+      };
+      const addToCartInput: IAddToCartInput = {
+        id: currentUser?._id,
+        product: productInfo,
+      };
+      addToCart(addToCartInput).then(() => {
+        toast.success('Product added to cart');
+      });
+    }
   };
 
-  //   const handleAddToCart = () => {
-  //     !user && navigate('/login');
-  //     user && addToCart(user._id, productInfo, dispatch);
-  //   };
-
-  //   const handleAddToWishlist = () => {
-  //     !user && navigate('/login');
-  //     user &&
-  //       addToWishlist(user._id, productInfo).then(() => {
-  //         setAddedToWishlistMsg(true);
-  //       });
-  //   };
   return (
     <Grid item lg={3} sm={5} xs={10} gap={2}>
       <Item
@@ -133,21 +122,11 @@ const ProductComponent: React.FC<{ item: IProduct }> = ({ item }) => {
             <IconButton
               color="primary"
               size="small"
-              //   onClick={handleAddToCart}
+              onClick={handleAddToCart}
               sx={{ '&:hover': { bgcolor: '#CBF1F5', br: '50%' } }}
             >
               <Tooltip title="Add to Cart" placement="top" arrow>
                 <ShoppingCartOutlined fontSize="inherit" />
-              </Tooltip>
-            </IconButton>
-            <IconButton
-              color="primary"
-              size="small"
-              //   onClick={handleAddToWishlist}
-              sx={{ '&:hover': { bgcolor: '#CBF1F5', br: '50%' } }}
-            >
-              <Tooltip title="Add to Wishlist" placement="top" arrow>
-                <FavoriteBorderOutlined fontSize="inherit" />
               </Tooltip>
             </IconButton>
             <IconButton
@@ -168,7 +147,7 @@ const ProductComponent: React.FC<{ item: IProduct }> = ({ item }) => {
         </Stack>
 
         <Button
-          onClick={() => setOpenProduct(true)}
+          onClick={() => route.push('/product/' + item._id)}
           sx={{
             display: 'flex',
             flexDirection: 'column',
@@ -198,50 +177,6 @@ const ProductComponent: React.FC<{ item: IProduct }> = ({ item }) => {
           </Typography>
         </Button>
       </Item>
-
-      <Dialog
-        // TransitionComponent={Transition}
-        open={openProduct}
-        onClose={() => setOpenProduct(false)}
-        scroll="body"
-        aria-labelledby="title"
-      >
-        <DialogTitle
-          id="title"
-          variant="button"
-          sx={{ pb: 1, display: 'flex', justifyContent: 'space-between' }}
-        >
-          <Typography variant="button">
-            {item.title}{' '}
-            <Typography variant="subtitle2">ID: {item._id}</Typography>
-          </Typography>{' '}
-          <Chip
-            icon={<Cancel />}
-            label="Cancel"
-            onClick={() => setOpenProduct(false)}
-            color="error"
-            size="small"
-          />
-        </DialogTitle>
-      </Dialog>
-
-      <Snackbar
-        anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
-        open={addedToCartMsg}
-        // TransitionComponent={SlideTransition}
-        autoHideDuration={2000}
-        onClose={() => setAddedToCartMsg(false)}
-        message="Added To Cart"
-      />
-
-      <Snackbar
-        anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
-        open={addedToWishlistMsg}
-        // TransitionComponent={SlideTransition}
-        autoHideDuration={2000}
-        onClose={() => setAddedToWishlistMsg(false)}
-        message="Added To Wishlist"
-      />
     </Grid>
   );
 };

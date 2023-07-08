@@ -1,11 +1,12 @@
 import './globals.css';
 import { Inter } from 'next/font/google';
-import ToastProvider from './providers/toast.provider';
+import ToastProvider from '../providers/toast.provider';
 import 'react-toastify/dist/ReactToastify.css';
-import UserProvider from './providers/user.provider';
+import UserProvider from '../providers/user.provider';
 import { Props } from '@/interfaces/default.interface';
-import { useUserContext } from '@/context/userContext';
-import ProductProvider from './providers/product.provider';
+import ProductProvider from '../providers/product.provider';
+import Navbar from '@/components/layouts/navbar';
+import Footer from '@/components/layouts/footer';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -20,7 +21,11 @@ export default function RootLayout({ children }: Props) {
       <body className={inter.className}>
         <ProductProvider>
           <UserProvider>
-            <ToastProvider>{children}</ToastProvider>
+            <ToastProvider>
+              <Navbar />
+              {children}
+              <Footer />
+            </ToastProvider>
           </UserProvider>
         </ProductProvider>
       </body>

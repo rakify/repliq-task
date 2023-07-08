@@ -35,7 +35,7 @@ const Product = () => {
 
   const desc = product?.desc.split('\n');
 
-  const { currentUser } = useUserContext();
+  const { currentUser, setCart } = useUserContext();
 
   const handleAddToCart = () => {
     !currentUser && route.push('/login');
@@ -55,7 +55,8 @@ const Product = () => {
         id: currentUser?._id,
         product: productInfo,
       };
-      addToCart(addToCartInput).then(() => {
+      addToCart(addToCartInput).then((res) => {
+        setCart(res.data);
         toast.success('Product added to cart');
       });
     }

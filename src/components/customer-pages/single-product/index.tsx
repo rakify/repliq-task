@@ -44,7 +44,7 @@ const ProductTitle = styled(Typography)(({ theme }) => ({
 const ProductComponent: React.FC<{ item: IProduct }> = ({ item }) => {
   const route = useRouter();
 
-  const { currentUser } = useUserContext();
+  const { currentUser, setCart } = useUserContext();
 
   const handleAddToCart = () => {
     !currentUser && route.push('/login');
@@ -64,7 +64,8 @@ const ProductComponent: React.FC<{ item: IProduct }> = ({ item }) => {
         id: currentUser?._id,
         product: productInfo,
       };
-      addToCart(addToCartInput).then(() => {
+      addToCart(addToCartInput).then((res) => {
+        setCart(res.data);
         toast.success('Product added to cart');
       });
     }

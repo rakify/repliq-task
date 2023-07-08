@@ -5,24 +5,11 @@ const Footer = () => {
         <div className="container px-5 py-24 mx-auto flex md:items-center lg:items-start md:flex-row md:flex-nowrap flex-wrap flex-col">
           <div className="w-64 flex-shrink-0 md:mx-0 mx-auto text-center md:text-left">
             <a className="flex title-font font-medium items-center md:justify-start justify-center text-gray-900">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="w-10 h-10 text-white p-2 bg-pink-600 rounded-full"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  d="M12 18h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"
-                />
-              </svg>
-              <span className="ml-3 text-xl text-white">DEV</span>
+              <span className="ml-3 text-xl text-white">Repliq Mart</span>
             </a>
             <p className="mt-2 text-sm text-white">
-              Air plant banjo lyft occupy retro adaptogen indego
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+              eiusmod tempor incididunt
             </p>
           </div>
           <div className="flex-grow flex flex-wrap md:pl-20 -mb-10 md:mt-0 mt-10 md:text-left text-center">
@@ -139,14 +126,14 @@ const Footer = () => {
         <div className="bg-indigo-900">
           <div className="container mx-auto py-4 px-5 flex flex-wrap flex-col sm:flex-row">
             <p className="text-white text-sm text-center sm:text-left">
-              © 2020 Dev —
+              © 2023 Rakib —
               <a
-                href="https://twitter.com/knyttneve"
+                href="https://github.com/rakify"
                 rel="noopener noreferrer"
                 className="text-gray-400 ml-1"
                 target="_blank"
               >
-                @Developer
+                @RakibMiah
               </a>
             </p>
             <span className="inline-flex sm:ml-auto sm:mt-0 mt-2 justify-center sm:justify-start">

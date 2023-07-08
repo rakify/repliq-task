@@ -12,6 +12,7 @@ import {
   Tooltip,
   Typography,
 } from '@mui/material';
+import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { toast } from 'react-toastify';
@@ -43,7 +44,7 @@ const ProductComponent: React.FC<{ item: IProduct }> = ({ item }) => {
   const { currentUser, setCart } = useUserContext();
 
   const handleAddToCart = () => {
-    !currentUser && route.push('/login');
+    !currentUser && route.push('/auth/signIn');
 
     if (currentUser && item) {
       const productInfo = {
@@ -92,9 +93,11 @@ const ProductComponent: React.FC<{ item: IProduct }> = ({ item }) => {
             position: 'relative',
           }}
         >
-          <img
+          <Image
             className="m-auto block max-w-full max-h-full"
             alt="PRODUCT"
+            width={200}
+            height={150}
             src={item.img}
           />
           <Stack

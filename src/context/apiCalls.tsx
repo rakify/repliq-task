@@ -118,3 +118,23 @@ export const addToCart = async (addToCartInput: IAddToCartInput) => {
     return { result: 'error', message: 'Failed to add to cart' + err };
   }
 };
+
+//Admin
+
+export const getOrders = async () => {
+  try {
+    const res = await axios.get(`/orders/all`);
+    return res.data;
+  } catch (err) {
+    return err;
+  }
+};
+
+export const getUsers = async () => {
+  try {
+    const res = await axios.get('/users?sortBy=createdAt');
+    return res.data;
+  } catch (err) {
+    return err;
+  }
+};

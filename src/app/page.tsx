@@ -1,12 +1,13 @@
-import Image from 'next/image';
+'use client';
+import { useUserContext } from '@/context/userContext';
 import Products from './products/page';
-import Footer from '@/components/layouts/footer';
-import Navbar from '@/components/layouts/navbar';
+import AdminProducts from './admin/products/page';
 
 export default function Home() {
+  const { currentUser } = useUserContext();
   return (
     <main className="">
-      <Products />
+      {currentUser && currentUser.isAdmin ? <AdminProducts /> : <Products />}
     </main>
   );
 }

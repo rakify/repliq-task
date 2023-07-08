@@ -1,17 +1,18 @@
 import { addToCart } from '@/context/apiCalls';
 import { useUserContext } from '@/context/userContext';
 import {
+  ICart,
   ICartProduct,
   ICartQuantity,
   IGroupedCart,
 } from '@/interfaces/cart.interface';
-import { Celebration, Clear } from '@mui/icons-material';
+import { Celebration, Clear, Pending } from '@mui/icons-material';
 import { Avatar, Button, Stack, Typography, IconButton } from '@mui/material';
 import Link from 'next/link';
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 
 const CartPage = () => {
-  const { currentUser, cart, setCart, fetchCartProducts } = useUserContext();
+  const { currentUser, cart, setCart } = useUserContext();
   const [groupedCart, setGroupedCart] = useState<IGroupedCart>({});
 
   const [totalSaved, setTotalSaved] = useState(0);
@@ -50,8 +51,18 @@ const CartPage = () => {
 
         if (type === 'remove') {
           productInfo.quantity = -quantity;
-          await addToCart(addToCartInput);
-          await fetchCartProducts(currentUser._id);
+          await addToCart(addToCartInput).then((response) => {
+            if (response.status && response.status === 201) {
+              const cart: ICart = {
+                products: response.data.products,
+                total: response.data.total,
+                isError: false,
+                isFetching: false,
+              };
+              setCart(cart);
+              localStorage.setItem('cart', JSON.stringify(cart));
+            }
+          });
         }
 
         setLoading(false);
@@ -61,10 +72,6 @@ const CartPage = () => {
       }
     }
   };
-
-  useEffect(() => {
-    if (currentUser) fetchCartProducts(currentUser._id);
-  }, [currentUser]);
 
   useEffect(() => {
     let totalMarketPrice = 0;
@@ -237,7 +244,7 @@ const CartPage = () => {
                                 })
                               }
                             >
-                              <Clear />
+                              {loading ? <Pending /> : <Clear />}
                             </IconButton>
                           </Stack>
                         )

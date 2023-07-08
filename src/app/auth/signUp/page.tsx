@@ -11,7 +11,7 @@ export default function SignUp() {
   const { currentUser } = useUserContext();
 
   useEffect(() => {
-    if (currentUser) {
+    if (currentUser && currentUser.accountType === 0) {
       router.push('/');
     }
   }, [currentUser, router]);

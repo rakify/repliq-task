@@ -32,7 +32,11 @@ export const adminLinks = [
     link: '/admin/products',
   },
   {
-    title: 'Users',
+    title: 'Orders',
+    link: '/admin/orders',
+  },
+  {
+    title: 'Customers',
     link: '/admin/users',
   },
 ];

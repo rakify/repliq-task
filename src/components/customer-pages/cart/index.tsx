@@ -1,15 +1,66 @@
+import { addToCart } from '@/context/apiCalls';
 import { useUserContext } from '@/context/userContext';
-import { ICartProduct, IGroupedCart } from '@/interfaces/cart.interface';
+import {
+  ICartProduct,
+  ICartQuantity,
+  IGroupedCart,
+} from '@/interfaces/cart.interface';
 import { Celebration, Clear } from '@mui/icons-material';
 import { Avatar, Button, Stack, Typography, IconButton } from '@mui/material';
 import Link from 'next/link';
 import React, { useEffect, useState } from 'react';
 
 const CartPage = () => {
-  const { currentUser, cart, fetchCartProducts } = useUserContext();
+  const { currentUser, cart, setCart, fetchCartProducts } = useUserContext();
   const [groupedCart, setGroupedCart] = useState<IGroupedCart>({});
+
   const [totalSaved, setTotalSaved] = useState(0);
   const [loading, setLoading] = useState(false);
+
+  const handleQuantity = async ({
+    type,
+    productId,
+    title,
+    img,
+    quantity,
+    price,
+    marketPrice,
+    seller,
+    hasMerchantReturnPolicy,
+  }: ICartQuantity) => {
+    if (currentUser && !loading) {
+      try {
+        setLoading(true);
+
+        let productInfo = {
+          productId: productId,
+          title: title,
+          img: img,
+          price: price,
+          marketPrice: marketPrice,
+          seller: seller,
+          hasMerchantReturnPolicy: hasMerchantReturnPolicy,
+          quantity: 0,
+        };
+
+        const addToCartInput = {
+          id: currentUser._id,
+          product: productInfo,
+        };
+
+        if (type === 'remove') {
+          productInfo.quantity = -quantity;
+          await addToCart(addToCartInput);
+          await fetchCartProducts(currentUser._id);
+        }
+
+        setLoading(false);
+      } catch (error) {
+        console.error('Error:', error);
+        setLoading(false);
+      }
+    }
+  };
 
   useEffect(() => {
     if (currentUser) fetchCartProducts(currentUser._id);
@@ -68,6 +119,9 @@ const CartPage = () => {
 
   return (
     <>
+      <Typography variant="h3" className="mt-8 mb-2 text-center">
+        Your Cart {cart.products.length > 0 ? `(${cart.products.length})` : ''}
+      </Typography>
       <Stack direction="column" gap={1}>
         {!currentUser && (
           <Typography sx={{ textAlign: 'center', marginTop: 5 }}>
@@ -80,147 +134,154 @@ const CartPage = () => {
           </Typography>
         )}
 
-        {cart && cart.products.length > 0 && !cart.isError && (
-          <Stack
-            direction="column"
-            sx={{
-              height: '70vh',
-              overflowY: 'scroll',
-              overflowX: 'hide',
-            }}
-          >
-            {Object.entries(groupedCart).map(
-              ([seller, { products, totalAmount, totalMarketPrice }]) => {
-                return (
-                  <Stack
-                    direction="column"
-                    key={seller}
-                    sx={{ border: '1px solid #9af', mb: 1 }}
-                  >
+        <div className="flex flex-col lg:flex-row justify-around items-center">
+          {cart && cart.products.length > 0 && !cart.isError && (
+            <Stack className="flex h-[70vh] w-[90%] overflow-y-scroll overflow-x-hidden">
+              {Object.entries(groupedCart).map(
+                ([seller, { products, totalAmount, totalMarketPrice }]) => {
+                  return (
                     <Stack
-                      direction="row"
-                      justifyContent="space-between"
-                      alignItems="center"
+                      direction="column"
+                      key={seller}
+                      sx={{ border: '1px solid #9af', mb: 1 }}
                     >
-                      <Typography
-                        variant="overline"
-                        sx={{ bgcolor: '#9af', color: 'white', pl: 2, pr: 2 }}
+                      <Stack
+                        direction="row"
+                        justifyContent="space-between"
+                        alignItems="center"
                       >
-                        {seller}
-                      </Typography>
-                      <Typography
-                        variant="overline"
-                        sx={{
-                          bgcolor: '#9af',
-                          color: 'white',
-                          pr: 2,
-                          pl: 2,
-                        }}
-                      >
-                        <s> ৳ {totalMarketPrice}</s> ৳ {totalAmount}
-                      </Typography>
-                    </Stack>
-                    {products.map(
-                      ({
-                        productId,
-                        title,
-                        img,
-                        quantity,
-                        price,
-                        marketPrice,
-                        seller,
-                        hasMerchantReturnPolicy,
-                      }) => (
-                        <Stack
-                          direction="row"
-                          justifyContent="space-between"
-                          sx={{
-                            borderBottom: '0.1px solid #D2D2CF',
-                            flexDirection: { xs: 'column', sm: 'row' },
-                          }}
-                          key={productId}
+                        <Typography
+                          variant="overline"
+                          sx={{ bgcolor: '#9af', color: 'white', pl: 2, pr: 2 }}
                         >
+                          {seller}
+                        </Typography>
+                        <Typography
+                          variant="overline"
+                          sx={{
+                            bgcolor: '#9af',
+                            color: 'white',
+                            pr: 2,
+                            pl: 2,
+                          }}
+                        >
+                          <s> ৳ {totalMarketPrice}</s> ৳ {totalAmount}
+                        </Typography>
+                      </Stack>
+                      {products.map(
+                        ({
+                          productId,
+                          title,
+                          img,
+                          quantity,
+                          price,
+                          marketPrice,
+                          hasMerchantReturnPolicy,
+                          seller,
+                        }) => (
                           <Stack
                             direction="row"
-                            alignItems="center"
                             justifyContent="space-between"
+                            sx={{
+                              borderBottom: '0.1px solid #D2D2CF',
+                              flexDirection: { xs: 'column', sm: 'row' },
+                            }}
+                            key={productId}
                           >
-                            <Avatar
-                              src={img}
-                              sx={{
-                                width: 40,
-                                height: 40,
-                                borderRadius: 0,
-                                mr: 1,
-                              }}
-                            />
-                            <Stack>
-                              <Typography sx={{ width: 100 }}>
-                                {title.slice(0, 50)}
-                              </Typography>
+                            <Stack
+                              direction="row"
+                              alignItems="center"
+                              justifyContent="space-between"
+                            >
+                              <Avatar
+                                src={img}
+                                sx={{
+                                  width: 80,
+                                  height: 80,
+                                  borderRadius: 0,
+                                  mr: 1,
+                                }}
+                              />
+                              <Stack>
+                                <Typography sx={{ width: 200 }}>
+                                  {title.slice(0, 50)}
+                                </Typography>
+                                <Typography
+                                  variant="body2"
+                                  sx={{ color: 'gray', fontSize: 10 }}
+                                >
+                                  <s>৳ {marketPrice}</s> ৳ {price}
+                                </Typography>
+                              </Stack>
                               <Typography
-                                variant="body2"
-                                sx={{ color: 'gray', fontSize: 10 }}
+                                variant="subtitle2"
+                                sx={{ color: 'orangered' }}
                               >
-                                <s>৳ {marketPrice}</s> ৳ {price}
+                                ৳ {price * quantity}
                               </Typography>
                             </Stack>
-                            <Typography
-                              variant="subtitle2"
-                              sx={{ color: 'orangered' }}
+                            <IconButton
+                              disabled={loading}
+                              size="large"
+                              onClick={() =>
+                                handleQuantity({
+                                  type: 'remove',
+                                  productId,
+                                  title,
+                                  img,
+                                  quantity,
+                                  price,
+                                  marketPrice,
+                                  seller,
+                                  hasMerchantReturnPolicy,
+                                })
+                              }
                             >
-                              ৳ {price * quantity}
-                            </Typography>
+                              <Clear />
+                            </IconButton>
                           </Stack>
-                          <IconButton
-                            disabled={loading}
-                            size="large"
-                            onClick={() => {}}
-                          >
-                            <Clear />
-                          </IconButton>
-                        </Stack>
-                      )
-                    )}
-                  </Stack>
-                );
-              }
-            )}
-          </Stack>
-        )}
-        {cart.products.length > 0 && (
-          <>
-            <Stack
-              sx={{
-                color: 'orangered',
-                display: 'flex',
-                alignItems: 'center',
-                flexDirection: 'center',
-              }}
-            >
-              <Celebration />{' '}
-              <Typography>
-                <span style={{ color: 'orangered' }}>৳{totalSaved}</span> Saved!
-                Great Deal!
-              </Typography>
+                        )
+                      )}
+                    </Stack>
+                  );
+                }
+              )}
             </Stack>
-
-            <Button variant="contained">
-              <Link
-                href="/checkout"
-                style={{
-                  textDecoration: 'none',
-                  color: 'white',
+          )}
+          {cart.products.length > 0 && (
+            <div className="w-80 lg:w-[500px] text-center">
+              <Stack
+                sx={{
+                  color: 'orangered',
                   display: 'flex',
-                  gap: 10,
+                  alignItems: 'center',
+                  flexDirection: 'center',
                 }}
               >
-                <Typography>CHECKOUT NOW</Typography>
-                <Typography>৳{cart.total}</Typography>
-              </Link>
-            </Button>
-          </>
-        )}
+                <Celebration />{' '}
+                <Typography>
+                  <span style={{ color: 'orangered' }}>৳{totalSaved}</span>{' '}
+                  Saved! Great Deal!
+                </Typography>
+              </Stack>
+
+              <Button variant="contained" className="bg-slate-500">
+                <Link
+                  href="/checkout"
+                  style={{
+                    textDecoration: 'none',
+                    color: 'white',
+                    display: 'flex',
+                    gap: 10,
+                  }}
+                >
+                  <Typography>CHECKOUT NOW</Typography>
+                  <Typography>৳{cart.total}</Typography>
+                </Link>
+              </Button>
+            </div>
+          )}
+        </div>
       </Stack>
     </>
   );

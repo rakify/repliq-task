@@ -13,13 +13,13 @@ import Menu from '@mui/material/Menu';
 import MenuIcon from '@mui/icons-material/Menu';
 import SearchIcon from '@mui/icons-material/Search';
 import AccountCircle from '@mui/icons-material/AccountCircle';
-import MailIcon from '@mui/icons-material/Mail';
-import NotificationsIcon from '@mui/icons-material/Notifications';
 import MoreIcon from '@mui/icons-material/MoreVert';
 import Link from 'next/link';
 import { useUserContext } from '@/context/userContext';
-import { ShoppingBag } from '@mui/icons-material';
+import { LogoutOutlined, ShoppingBag } from '@mui/icons-material';
 import { useRouter } from 'next/navigation';
+import { toast } from 'react-toastify';
+import { Button } from '@mui/material';
 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
@@ -62,7 +62,7 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 }));
 
 export default function PrimarySearchAppBar() {
-  const { cart } = useUserContext();
+  const { cart, logoutUser, currentUser } = useUserContext();
   const router = useRouter();
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] =
@@ -84,8 +84,13 @@ export default function PrimarySearchAppBar() {
     handleMobileMenuClose();
   };
 
-  const handleMobileMenuOpen = (event: MouseEvent<HTMLElement>) => {
-    setMobileMoreAnchorEl(event.currentTarget);
+  const handleMobileMenuOpen = (event: MouseEvent<HTMLElement>) => {};
+  const handleProfileClick = () => {
+    toast.error('This feature is not available yet');
+  };
+  const handleLogout = async () => {
+    await logoutUser();
+    toast.success('Logged out');
   };
 
   const menuId = 'primary-search-account-menu';
@@ -97,7 +102,7 @@ export default function PrimarySearchAppBar() {
         horizontal: 'right',
       }}
       id={menuId}
-      keepMounted
+      keepMounted={false}
       transformOrigin={{
         vertical: 'top',
         horizontal: 'right',
@@ -105,8 +110,21 @@ export default function PrimarySearchAppBar() {
       open={isMenuOpen}
       onClose={handleMenuClose}
     >
-      <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
-      <MenuItem onClick={handleMenuClose}>My account</MenuItem>
+      {!currentUser && (
+        <>
+          <MenuItem onClick={() => router.push('/auth/signIn')}>Login</MenuItem>
+          <MenuItem onClick={() => router.push('/auth/signUp')}>
+            Register
+          </MenuItem>
+        </>
+      )}
+
+      {currentUser && (
+        <>
+          <MenuItem onClick={handleProfileClick}>Profile</MenuItem>
+          <MenuItem onClick={() => handleLogout()}>Logout</MenuItem>
+        </>
+      )}
     </Menu>
   );
 
@@ -119,7 +137,7 @@ export default function PrimarySearchAppBar() {
         horizontal: 'right',
       }}
       id={mobileMenuId}
-      keepMounted
+      keepMounted={false}
       transformOrigin={{
         vertical: 'top',
         horizontal: 'right',
@@ -128,25 +146,51 @@ export default function PrimarySearchAppBar() {
       onClose={handleMobileMenuClose}
     >
       <MenuItem>
-        <IconButton size="large" aria-label="show 4 new mails" color="inherit">
+        <IconButton
+          size="large"
+          aria-label="show cart products"
+          color="inherit"
+        >
           <Badge badgeContent={cart.products.length} color="error">
             <ShoppingBag />
           </Badge>
         </IconButton>
         <p>Cart</p>
       </MenuItem>
-      <MenuItem onClick={handleProfileMenuOpen}>
-        <IconButton
-          size="large"
-          aria-label="account of current user"
-          aria-controls="primary-search-account-menu"
-          aria-haspopup="true"
-          color="inherit"
-        >
-          <AccountCircle />
-        </IconButton>
-        <p>Profile</p>
-      </MenuItem>
+      {!currentUser && (
+        <>
+          <Link href="/auth/signIn">Login</Link>
+        </>
+      )}
+      {currentUser && (
+        <>
+          <MenuItem onClick={handleProfileClick}>
+            <IconButton
+              size="large"
+              aria-label="account of current user"
+              aria-controls="primary-search-account-menu"
+              aria-haspopup="true"
+              color="inherit"
+              onClick={handleProfileClick}
+            >
+              <AccountCircle />
+            </IconButton>
+            <p>Profile</p>
+          </MenuItem>
+          <MenuItem onClick={() => logoutUser()}>
+            <IconButton
+              size="large"
+              aria-label="logout of current user"
+              aria-controls="primary-search-account-menu"
+              aria-haspopup="true"
+              color="inherit"
+            >
+              <LogoutOutlined />
+            </IconButton>
+            <p>Logout</p>
+          </MenuItem>
+        </>
+      )}
     </Menu>
   );
 

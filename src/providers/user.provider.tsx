@@ -5,6 +5,7 @@ import { UserContext, defaultCart } from '@/context/userContext';
 import { ICart, ICartSuccessResponse } from '@/interfaces/cart.interface';
 import { Props } from '@/interfaces/default.interface';
 import { IUser } from '@/interfaces/user.interface';
+import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
 export default function UserProvider({ children }: Props) {
@@ -12,11 +13,14 @@ export default function UserProvider({ children }: Props) {
   const [isError, setIsError] = useState(false);
   const [currentUser, setCurrentUser] = useState<IUser | null>(null);
   const [cart, setCart] = useState(defaultCart);
+  const router = useRouter();
 
   const logoutUser = () => {
     setCurrentUser(null);
     setCart(defaultCart);
-    localStorage.clear();
+    localStorage.removeItem('cart');
+    localStorage.removeItem('currentUser');
+    router.push('/auth/signIn');
   };
 
   const fetchCartProducts = async (id: string) => {
